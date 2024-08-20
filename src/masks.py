@@ -14,7 +14,8 @@ def get_mask_account(acc_number: str) -> str:
     new_list.append("**" + acc_number[-4:])
     return "".join(new_list)
 
-#client_acc_number = 73654108430135874305
-#client_card_number = 7000792289606361
-#print(get_mask_account(str(client_acc_number)))
-#print(get_mask_card(str(client_card_number)))
+
+# client_acc_number = 73654108430135874305
+# client_card_number = 7000792289606361
+# print(get_mask_account(str(client_acc_number)))
+# print(get_mask_card(str(client_card_number)))
