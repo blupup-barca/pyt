@@ -1,14 +1,20 @@
-def mask_card(card_number: str) -> str | None:
-    """Функция, маскировки номера карты"""
-    if card_number.isdigit() and len(card_number) == 16:
-        return f"{card_number[:4]} {card_number[4:6]}{"*" * 2} {"*" * 4} {card_number[12:]}"
-    else:
-        return None
+def get_mask_card(card_number: str) -> str:
+    """функция, маскировки номера карты"""
+    new_list = list()
+    new_list.append(card_number[0:4])
+    new_list.append(card_number[4:6] + "**")
+    new_list.append("****")
+    new_list.append(card_number[12:])
+    return "".join(new_list)
 
 
-def mask_account(acc_number: str) -> str | None:
-    """Функция, маскировки номера счета"""
-    if acc_number.isdigit() and len(acc_number) == 20:
-        return f"{'*' * 2}{acc_number[-4::]}"
-    else:
-        return None
+def get_mask_account(acc_number: str) -> str:
+    """функция, маскировки номера счета"""
+    new_list = list()
+    new_list.append("**" + acc_number[-4:])
+    return "".join(new_list)
+
+#client_acc_number = 73654108430135874305
+#client_card_number = 7000792289606361
+#print(get_mask_account(str(client_acc_number)))
+#print(get_mask_card(str(client_card_number)))
