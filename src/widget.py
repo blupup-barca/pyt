@@ -17,30 +17,15 @@ def mask_account_card(type_and_number_card: str) -> str:
     """
     Функция принимает тип и номер карты или номер счета и выводит их замаскированными
     """
-    split_numbers_card = type_and_number_card.split()
-    new_list = []
-    name_and_number = []
-    for numb_or_name in split_numbers_card:
-        if numb_or_name.isalpha():
-            name_and_number.append(numb_or_name)
-        elif numb_or_name.isdigit():
-            if len(numb_or_name) == 16:
-                masks_numb_card = get_mask_account(numb_or_name)
-                name_and_number.append(masks_numb_card)
-                new_list.append(name_and_number)
-                name_and_number = list()
-            elif len(numb_or_name) == 20:
-                masks_numb_account = get_mask_account(numb_or_name)
-                name_and_number.append(masks_numb_account)
-                new_list.append(name_and_number)
-                name_and_number = list()
-        else:
-            continue
-    ready_date = " "
-    for values_card in new_list:
-        translate_into_a_line = " ".join(values_card)
-        ready_date += translate_into_a_line + "\n"
-    return ready_date
+    split_account_or_card = type_and_number_card.split(" ")
+    if "Счет" in split_account_or_card[0]:
+        masked_number = 16
+get_mask_account(split_account_or_card[-1])
+    else:
+        masked_number = 20
+get_mask_card_number(split_account_or_card[-1])
+    split_account_or_card[-1] = masked_number
+    return " ".join(split_account_or_card)
 
 
 def get_date(date: str) -> str:
