@@ -1,4 +1,4 @@
-from masks import get_mask_account
+from masks import get_mask_account, get_mask_card_numbers
 
 # примеры входных данных для проверки функции
 card_and_account_numbers = """ Maestro 1596837868705199
@@ -12,18 +12,15 @@ Visa Gold 5999414228426353
 
 date = "2024-03-11T02:26:18.671407"
 
-
 def mask_account_card(type_and_number_card: str) -> str:
     """
     Функция принимает тип и номер карты или номер счета и выводит их замаскированными
     """
     split_account_or_card = type_and_number_card.split(" ")
-    if "Счет" in split_account_or_card[0]:
-        masked_number = 16
-get_mask_account(split_account_or_card[-1])
+    if "Счет" in split_account_or_card[-16:]:
+        masked_number = get_mask_account(split_account_or_card[-1])
     else:
-        masked_number = 20
-get_mask_card_number(split_account_or_card[-1])
+        masked_number = get_mask_card_numbers(split_account_or_card[-1])
     split_account_or_card[-1] = masked_number
     return " ".join(split_account_or_card)
 
