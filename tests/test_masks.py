@@ -1,36 +1,34 @@
 import pytest
 
-from src.masks import get_mask_card_number, get_mask_account
+from src.masks import get_mask_account, get_mask_card_number
+
+def test_get_mask_card_numbers(numbers_16):
+    assert get_mask_card_number(numbers_16) == "7000 79** **** 6361"
 
 
-# Проверка маскировки номера карты с допустимыми и не правильными значениями или при их отсутствии
-@pytest.mark.parametrize("card_number, expected", [
-    ("Maestro 1596837868705199", "Maestro 1596 83** **** 5199"),
-    ("MasterCard 7158300734726758", "MasterCard 7158 30** **** 6758"),
-    ("Visa Classic 6831982476737658","Visa Classic 6831 98** **** 7658"),
-    ("Visa Platinum 8990922113665229", "Visa Platinum 8990 92** **** 5229"),
-    ("Visa Gold 5999414228426353", "Visa Gold 5999 41** **** 6353"),
-    ("Visa Gold 14228426353", "Данный формат карт не поддерживаеться!"),
-    ("Счет 64686473678894779589", "Данный формат карт не поддерживаеться!"),
-    ("64686473678894779589 Счет", "Данный формат карт не поддерживаеться!"),
-    ("Platinum 8990922113665229 Visa", "Данный формат карт не поддерживаеться!"),
-    ("MasterCard 71583007347267581", "Данный формат карт не поддерживаеться!"),
-    ("", "Данный формат карт не поддерживаеться!")
-])
-def test_get_mask_card_number(card_number, expected):
-    assert get_mask_card_number(card_number) == expected
+def test_get_mask_card_numbers_with_spaces(numbers_16_spases):
+    assert get_mask_card_number(numbers_16_spases) == "7000 79** **** 6361"
 
 
-# Проверка маскировки номера счета с допустимыми и не правильными значениями или при их отсутствии
-@pytest.mark.parametrize("bank_account_number, expected", [
-    ("Счет 64686473678894779589", "Счет **9589"),
-    ("Счет 35383033474447895560", "Счет **5560"),
-    ("Счет 73654108430135874305", "Счет **4305"),
-    ("Счет 736", "Данный формат счета не поддерживаеться!"),
-    ("Счет 1234567891011121314151617181920212223242526272829303132333435363", "Данный формат счета не поддерживаеться!"),
-    ("Maestro 1596837868705199", "Данный формат счета не поддерживаеться!"),
-    ("64686473678894779589 Счет", "Данный формат счета не поддерживаеться!"),
-    ("", "Данный формат счета не поддерживаеться!")
-])
-def test_get_mask_account(bank_account_number, expected):
-    assert get_mask_account(bank_account_number) == expected
+def test_get_mask_card_number_int(numbers_16_int):
+    assert get_mask_card_number(numbers_16_int) == "7000 79** **** 6361"
+
+
+def test_get_mask_card_number_maxnumber(numbers_19):
+    assert get_mask_card_number(numbers_19) == "7000 79** **** 1123"
+
+
+def test_get_mask_card_number_minnumber(numbers_13):
+    assert get_mask_card_number(numbers_13) == "7000 79** **** 9606"
+
+
+def test_get_mask_account(numbers_20):
+    assert get_mask_account(numbers_20) == "**1234"
+
+
+def test_get_mask_account_with_spaces(numbers_20_spases):
+    assert get_mask_account(numbers_20_spases) == "**1234"
+
+
+def test_get_mask_account_int(numbers_20_int):
+    assert get_mask_account(numbers_20_int) == "**1234"
