@@ -1,40 +1,33 @@
-from masks import get_mask_account
+from src.masks import get_mask_account, get_mask_card_number
 
-# примеры входных данных для проверки функции
-card_and_account_numbers = """ Maestro 1596837868705199
-Счет 64686473678894779589
-MasterCard 7158300734726758
-Счет 35383033474447895560
-Visa Classic 6831982476737658
-Visa Platinum 8990922113665229
-Visa Gold 5999414228426353
-Счет 73654108430135874305 """
-
-date = "2024-03-11T02:26:18.671407"
-
-
-def mask_account_card(type_and_number_card: str) -> str:
-    """
-    Функция принимает тип и номер карты или номер счета и выводит их замаскированными
-    """
-    split_account_or_card = type_and_number_card.split(" ")
-    if "Счет" in split_account_or_card[0]:
-        masked_number = 16
-get_mask_account(split_account_or_card[-1])
+def mask_account_card(card_info: str) -> str:
+    """Принимает тип и номер карты/счета, возвращает замаскированный номер карты/счета"""
+    if card_info == "":
+        raise ValueError("нет данных")
+    card_infolist = card_info.split()
+    if card_infolist[0] == "Счет" or (card_infolist[0] == card_infolist[-1] and len(card_infolist[0]) == 20):
+        if card_infolist[-1] == "Счет":
+            raise ValueError("номер счета не указан")
+        returned_number = get_mask_account(card_infolist.pop(-1))
     else:
-        masked_number = 20
-get_mask_card_number(split_account_or_card[-1])
-    split_account_or_card[-1] = masked_number
-    return " ".join(split_account_or_card)
+        if card_infolist[-1].isdigit():
+            returned_number = get_mask_card_number(card_infolist.pop(-1))
+        else:
+            raise ValueError("номер карты не указан")
+    card_infolist.append(returned_number)
+    masked_number = " ".join(card_infolist)
+    return str(masked_number)
 
 
-def get_date(date: str) -> str:
-    """
-    Функиця принимает данные о дате и выводит её
-    """
-    return f"{date[8:10]}.{date[5:7]}.{date[:4]}"
-
-
-if __name__ == "__main__":
-    print(mask_account_card(card_and_account_numbers))
-    print(get_date("2024-03-11T02:26:18.671407"))
+def get_date(core_date: str) -> str:
+    """Принимает дату и время в формате ISO 8601, возвращает дату в формате ДД.ММ.ГГГГ"""
+    core_date_list = core_date.split("-")
+    if (
+        core_date_list[0].isdigit()
+        and core_date_list[1].isdigit()
+        and core_date_list[2][:2].isdigit
+        and len(core_date_list) == 3
+    ):
+        returned_date = core_date_list[2][:2] + "." + core_date_list[1] + "." + core_date_list[0]
+        return returned_date
+    raise ValueError("некорректный формат даты")
