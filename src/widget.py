@@ -1,5 +1,6 @@
 from src.masks import get_mask_account, get_mask_card_number
 
+
 def mask_account_card(card_info: str) -> str:
     """Принимает тип и номер карты/счета, возвращает замаскированный номер карты/счета"""
     if card_info == "":
